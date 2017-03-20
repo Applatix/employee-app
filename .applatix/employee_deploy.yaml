@@ -1,5 +1,6 @@
 ---
-type: container
+type: service_template
+subtype: container
 name: mongodb
 description: MongoDB container
 container:
@@ -9,7 +10,8 @@ container:
     cpu_cores: 0.3
 
 ---
-type: container
+type: service_template
+subtype: container
 name: run-employee-node
 container:
   resources:
@@ -28,10 +30,13 @@ inputs:
 labels:
 
 ---
-type: deployment
+type: service_template
+subtype: deployment
 name: deploy-employee-mongo
 inputs:
   parameters:
+    code:
+      default: "%%session.artifacts%%"
     appname:
       default: "employee-app"
 application:
@@ -51,11 +56,13 @@ containers:
       template: mongodb
        
 ---
-type: deployment
+type: service_template
+subtype: deployment
 name: deploy-employee-app
 inputs:
   parameters:
-
+    code:
+      default: "%%session.artifacts%%"
     appname:
       default: "employee-app"
 application:
@@ -75,7 +82,8 @@ containers:
       template: run-employee-node
 
 ---
-type: workflow
+type: service_template
+subtype: workflow
 name: Deploy Employee App 
 description: This is the workflow to deploy 2 Node.js pods with a database and a web service.
 inputs:
@@ -84,6 +92,8 @@ inputs:
       default: "%%session.commit%%"
     appname:
       default: "employee-app"
+    repo:
+      default: "%%session.repo%%"
 steps:
   - checkout:
       template: axscm-checkout
