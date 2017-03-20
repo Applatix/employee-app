@@ -55,7 +55,7 @@ inputs:
     code:
       default: "%%session.artifacts%%"
     appname:
-      default: "mlb-app"
+      default: "employee-app"
 application:
   name: "%%appname%%"
 deployment:
@@ -82,6 +82,6 @@ inputs:
       default: "employee-app"
 steps:
   - deploy-mongo:
-      template: deploy-mongo
-  - deploy-mlb:
-      template: deploy-employee
+      template: deploy-employee-mongo
+  - deploy-employee-app:
+      template: deploy-employee-app
