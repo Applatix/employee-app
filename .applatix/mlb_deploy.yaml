@@ -1,0 +1,87 @@
+
+---
+type: container
+name: mongodb
+description: MongoDB container
+container:
+  image: "mongo:3.2.9"
+  resources:
+    mem_mib: 2048
+    cpu_cores: 0.3
+
+---
+type: container
+name: run-employee-node
+container:
+  resources:
+    mem_mib: 1024
+    cpu_cores: 0.4
+    disk_gb: 2
+  image: applatix/employee-app
+  docker_options: 
+  command: 
+
+
+---
+type: deployment
+name: deploy-employee-mongo
+inputs:
+  parameters:
+    code:
+      default: "%%session.artifacts%%"
+    appname:
+      default: "employee-app"
+application:
+  name: "%%appname%%"
+deployment:
+  name: "mongo-employee-deploy"
+scale:
+  min: 1
+internal_routes:
+  - name: mongo-employee
+    ports:
+      - name: tcp
+        port: 27017
+        target_port: 27017
+containers:
+  - server:
+      template: mongodb
+       
+---
+type: deployment
+name: deploy-employee-app
+inputs:
+  parameters:
+    code:
+      default: "%%session.artifacts%%"
+    appname:
+      default: "mlb-app"
+application:
+  name: "%%appname%%"
+deployment:
+  name: "run-employee-deploy"
+scale:
+  min: 2
+external_routes:
+  - name: mlb-db
+    target_port: 3000
+    redirect_http_to_https: true
+    ip_white_list:
+      - 0.0.0.0/0
+containers:
+  - server:
+      template: run-employee-node
+
+---
+type: workflow
+name: Deploy Employee App 
+description: This is the workflow to deploy 2 Node.js pods with a database and a web service.
+inputs:
+  parameters:
+    appname:
+      default: "employee-app"
+steps:
+  - deploy-mongo:
+      template: deploy-mongo
+  - deploy-mlb:
+      template: deploy-employee
