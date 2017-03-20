@@ -21,13 +21,6 @@ container:
   image: applatix/employee-app
   docker_options: 
   command: 
-inputs:
-  artifacts:
-  - from: "%%code%%"
-    path: "/src"
-  parameters:
-    code:
-labels:
 
 ---
 type: service_template
@@ -35,8 +28,6 @@ subtype: deployment
 name: deploy-employee-mongo
 inputs:
   parameters:
-    code:
-      default: "%%session.artifacts%%"
     appname:
       default: "employee-app"
 application:
@@ -61,8 +52,6 @@ subtype: deployment
 name: deploy-employee-app
 inputs:
   parameters:
-    code:
-      default: "%%session.artifacts%%"
     appname:
       default: "employee-app"
 application:
@@ -88,16 +77,10 @@ name: Deploy Employee App
 description: This is the workflow to deploy 2 Node.js pods with a database and a web service.
 inputs:
   parameters:
-    commit:
-      default: "%%session.commit%%"
     appname:
       default: "employee-app"
 steps:
   - deploy-mongo:
       template: deploy-employee-mongo
-      parameters:
-        code: "%%steps.checkout.code%%"
   - deploy-app:
       template: deploy-employee-app
-      parameters:
-        code: "%%steps.checkout.code%%"
