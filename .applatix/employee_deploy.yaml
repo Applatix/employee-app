@@ -26,8 +26,6 @@ type: deployment
 name: deploy-employee-mongo
 inputs:
   parameters:
-    code:
-      default: "%%session.artifacts%%"
     appname:
       default: "employee-app"
 application:
@@ -51,6 +49,7 @@ type: deployment
 name: deploy-employee-app
 inputs:
   parameters:
+
     appname:
       default: "employee-app"
 application:
