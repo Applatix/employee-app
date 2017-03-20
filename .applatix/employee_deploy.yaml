@@ -79,5 +79,5 @@ inputs:
 steps:
   - deploy-mongo:
       template: deploy-employee-mongo
-  - deploy-employee-app:
+  - deploy-app:
       template: deploy-employee-app
