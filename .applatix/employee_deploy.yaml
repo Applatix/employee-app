@@ -1,6 +1,5 @@
 ---
-type: service_template
-subtype: container
+type: container
 name: mongodb
 description: MongoDB container
 container:
@@ -10,8 +9,7 @@ container:
     cpu_cores: 0.3
 
 ---
-type: service_template
-subtype: container
+type: container
 name: run-employee-node
 container:
   resources:
@@ -23,8 +21,7 @@ container:
   command: 
 
 ---
-type: service_template
-subtype: deployment
+type: deployment
 name: deploy-employee-mongo
 inputs:
   parameters:
@@ -47,8 +44,7 @@ containers:
       template: mongodb
        
 ---
-type: service_template
-subtype: deployment
+type: deployment
 name: deploy-employee-app
 inputs:
   parameters:
@@ -71,8 +67,7 @@ containers:
       template: run-employee-node
 
 ---
-type: service_template
-subtype: workflow
+type: workflow
 name: Deploy Employee App 
 description: This is the workflow to deploy 2 Node.js pods with a database and a web service.
 inputs:
