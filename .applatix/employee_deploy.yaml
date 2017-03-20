@@ -72,7 +72,7 @@ deployment:
 scale:
   min: 2
 external_routes:
-  - name: mlb-db
+  - name: employee-app
     target_port: 3000
     redirect_http_to_https: true
     ip_white_list:
@@ -92,11 +92,7 @@ inputs:
       default: "%%session.commit%%"
     appname:
       default: "employee-app"
-    repo:
-      default: "%%session.repo%%"
 steps:
-  - checkout:
-      template: axscm-checkout
   - deploy-mongo:
       template: deploy-employee-mongo
       parameters:
